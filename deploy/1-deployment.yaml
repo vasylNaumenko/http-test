@@ -1,0 +1,23 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-name
+  namespace: prod
+  labels:
+    app: nginx-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-label
+  template:
+    metadata:
+     labels:
+      app: nginx-label
+    spec:
+      containers:
+      - name: nginx-container-name
+        image: vnau/nginx:latest
+        ports:
+        - containerPort: 80
