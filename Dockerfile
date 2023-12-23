@@ -1,21 +1,21 @@
-FROM golang:1.21.5 as builder
+FROM golang:1.21.5 as build
 
 WORKDIR /app
 
-COPY go.mod ./
+COPY go.mod .
 
 RUN go mod download
 
 COPY . .
 
-RUN go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o main .
 
 
 FROM alpine:latest
 
-WORKDIR /root/
+WORKDIR /app/
 
-COPY --from=builder /app/main .
+COPY --from=build /app/main .
 
 EXPOSE 4545
 
